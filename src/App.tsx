@@ -11,7 +11,7 @@ import { Dashboard } from '@/pages/Dashboard'
 import { News } from '@/pages/News'
 import { Insights } from '@/pages/Insights'
 import { Tenders } from '@/pages/Tenders'
-import { Bookmarks } from '@/pages/Bookmarks'
+import { Bookmarks } from '@/pages//Bookmarks'
 import { Users } from '@/pages/Users'
 
 // Create a client for React Query v5

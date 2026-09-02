@@ -50,7 +50,13 @@ export function Dashboard() {
   const { data: breaking } = useContentList('breaking-news')
   const { data: tenders } = useContentList('tenders')
   const { data: users } = useUsersList()
+// 1. Get the unwrapped list of users
+const userList = Array.isArray(users) 
+  ? users 
+  : (users as any)?.items || (users as any)?.data?.items || []
 
+// 2. Get the total count from pagination metadata or fallback to array length
+const totalCount = (users as any)?.pagination?.total || (users as any)?.data?.pagination?.total || userList.length
   const totalNews = (news?.length || 0) + (trending?.length || 0) + (breaking?.length || 0)
 
   // Weather Code Mapper
@@ -117,7 +123,7 @@ export function Dashboard() {
             <UsersIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{users?.length || 0}</div>
+            <div className="text-2xl font-bold">{totalCount}</div>
             <p className="text-xs text-muted-foreground mt-0.5">Admins & clients registered</p>
           </CardContent>
         </Card>

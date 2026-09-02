@@ -83,7 +83,7 @@ export function Users() {
   // Open Edit User
   const handleEditClick = (user: UserItem) => {
     setSelectedUser(user)
-    setEditUsername(user.username || '')
+    setEditUsername(user.name || '')
     setEditEmail(user.email || '')
     setEditRole(user.role || 'user')
     setIsEditOpen(true)
@@ -203,16 +203,20 @@ export function Users() {
   }
 
   // Filter users
+// Filter users
   const filteredUsers = React.useMemo(() => {
-    if (!users) return []
-    return users.filter(
+    // Extract items array from the nested API response structure safely
+    const userList: UserItem[] = Array.isArray(users) 
+      ? users 
+      : (users as any)?.items || (users as any)?.data?.items || []
+
+    return userList.filter(
       (u) =>
-        u.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        u.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         u.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         u.role?.toLowerCase().includes(searchTerm.toLowerCase())
     )
   }, [users, searchTerm])
-
   // Paginated users
   const paginatedUsers = React.useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage
@@ -310,7 +314,7 @@ export function Users() {
                       <TableBody>
                         {paginatedUsers.map((user) => (
                           <TableRow key={user._id}>
-                            <TableCell className="font-semibold">{user.username}</TableCell>
+                          <TableCell className="font-semibold">{user.name || user.username}</TableCell>
                             <TableCell className="text-muted-foreground">{user.email}</TableCell>
                             <TableCell>
                               <span
