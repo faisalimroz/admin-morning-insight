@@ -20,7 +20,7 @@ import {
   Dialog,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
+  Dialogmerged_article,
   DialogFooter
 } from '@/components/ui/Dialog'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -31,6 +31,9 @@ interface ContentCrudProps {
   type: string
   title: string
   description: string
+  canonical_title: string
+  merged_article: string
+  summary: string
   hasCategory?: boolean
   hasLink?: boolean
   hasImage?: boolean
@@ -40,9 +43,12 @@ export function ContentCrud({
   type,
   title,
   description,
+  canonical_title,
+  merged_article,
+  summary,
   hasCategory = false,
   hasLink = false,
-  hasImage = false,
+  hasImage = true,
 }: ContentCrudProps) {
   // Search & Pagination State
   const [searchTerm, setSearchTerm] = React.useState('')
@@ -85,14 +91,14 @@ export function ContentCrud({
     setIsFormOpen(true)
   }
 
-  // Open Edit Dialog
-  const handleEditClick = (item: ContentItem) => {
+  // Open Edit Dialo
+  const handleEditClick = (item: any) => {
     setSelectedItem(item)
-    setFormTitle(item.title || '')
-    setFormContent(item.content || '')
+    setFormTitle(item.canonical_title || '') // Map canonical_title to your title state
+    setFormContent(item.merged_article || item.summary || '') // Map merged_article to content state
     setFormCategory(item.category || '')
-    setFormLink(item.link || '')
-    setFormImage(item.imageUrl || '')
+    // setFormSources(Array.isArray(item.sources) ? item.sources.join(', ') : '')
+    setFormImage(item.image_url || '')
     setIsFormOpen(true)
   }
 
@@ -107,19 +113,20 @@ export function ContentCrud({
     e.preventDefault()
     if (!formTitle || !formContent) {
       toast({
-        title: 'Validation error',
-        description: 'Title and content are required.',
+        canonical_title: 'Validation error',
+        merged_article: 'Title and content are required.',
         variant: 'destructive',
       })
       return
     }
 
-    const payload: Omit<ContentItem, 'id' | '_id'> = {
-      title: formTitle,
-      content: formContent,
+    const payload = {
+      canonical_title: formTitle,
+      merged_article: formContent,
+      summary: formContent, // or a dedicated summary field if you split them
+      // sources: formSources ? formSources.split(',').map((s: string) => s.trim()) : [],
       ...(hasCategory && { category: formCategory }),
-      ...(hasLink && { link: formLink }),
-      ...(hasImage && { imageUrl: formImage }),
+      ...(hasImage && { image_url: formImage }),
     }
 
     try {
@@ -128,15 +135,15 @@ export function ContentCrud({
         if (!id) return
         await updateMutation.mutateAsync({ id, data: payload })
         toast({
-          title: 'Item updated',
-          description: `"${formTitle}" has been successfully updated.`,
+          canonical_title: 'Item updated',
+          merged_article: `"${formTitle}" has been successfully updated.`,
           variant: 'success',
         })
       } else {
         await createMutation.mutateAsync(payload)
         toast({
-          title: 'Item created',
-          description: `"${formTitle}" has been successfully created.`,
+          canonical_title: 'Item created',
+          merged_article: `"${formTitle}" has been successfully created.`,
           variant: 'success',
         })
       }
@@ -144,8 +151,8 @@ export function ContentCrud({
     } catch (err: any) {
       console.error(err)
       toast({
-        title: 'Operation failed',
-        description: err.response?.data?.message || err.message || 'An error occurred.',
+        canonical_title: 'Operation failed',
+        merged_article: err.response?.data?.message || err.message || 'An error occurred.',
         variant: 'destructive',
       })
     }
@@ -159,32 +166,35 @@ export function ContentCrud({
     try {
       await deleteMutation.mutateAsync(id)
       toast({
-        title: 'Item deleted',
-        description: 'The item has been deleted successfully.',
+        canonical_title: 'Item deleted',
+        merged_article: 'The item has been deleted successfully.',
         variant: 'success',
       })
       setIsDeleteOpen(false)
     } catch (err: any) {
       console.error(err)
       toast({
-        title: 'Delete failed',
-        description: err.response?.data?.message || err.message || 'An error occurred.',
+        canonical_title: 'Delete failed',
+        merged_article: err.response?.data?.message || err.message || 'An error occurred.',
         variant: 'destructive',
       })
     }
   }
 
   // Filters and splits
-  const filteredItems = React.useMemo(() => {
-    if (!items) return []
-    return items.filter(
-      (item) =>
-        item.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.content?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.category?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  }, [items, searchTerm])
+const filteredItems = React.useMemo(() => {
+  if (!items) return []
+  const q = searchTerm.toLowerCase().trim()
+  if (!q) return items
 
+  return items.filter(
+    (item: any) =>
+      item.canonical_title?.toLowerCase().includes(q) ||
+      item.summary?.toLowerCase().includes(q) ||
+      item.merged_article?.toLowerCase().includes(q) ||
+      (Array.isArray(item.sources) && item.sources.some((s: string) => s.toLowerCase().includes(q)))
+  )
+}, [items, searchTerm])
   // Paginated data
   const paginatedItems = React.useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage
@@ -198,8 +208,8 @@ export function ContentCrud({
       {/* Top Section */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
+          <h1 className="text-2xl font-bold tracking-tight">{canonical_title}</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">{merged_article}</p>
         </div>
         <Button onClick={handleAddClick} className="self-start sm:self-center">
           <Plus className="mr-2 h-4 w-4" /> Add Item
@@ -212,7 +222,7 @@ export function ContentCrud({
           <div className="relative max-w-sm">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search by title, description..."
+              placeholder="Search by title, content..."
               className="pl-9"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -246,18 +256,28 @@ export function ContentCrud({
                   <TableRow>
                     <TableHead className="w-[30%]">Title</TableHead>
                     <TableHead className="w-[40%]">Content</TableHead>
+                    <TableHead className="w-[40%]">Sources</TableHead>
                     {hasCategory && <TableHead className="w-[15%]">Category</TableHead>}
                     {hasLink && <TableHead className="w-[15%]">Link</TableHead>}
                     <TableHead className="text-right w-[15%]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {paginatedItems.map((item) => (
-                    <TableRow key={item._id || item.id}>
-                      <TableCell className="font-semibold align-top">{item.title}</TableCell>
+                  {paginatedItems.map((item: any) => (
+                    <TableRow key={item._id || item.event_id}>
+                      {/* Change from item.title to item.canonical_title */}
+                      <TableCell className="font-semibold align-top">{item.canonical_title}</TableCell>
+
+                      {/* Change from item.content to item.summary */}
                       <TableCell className="text-muted-foreground line-clamp-3 align-top py-4 max-w-md break-words">
-                        {item.content}
+                        {item.summary}
                       </TableCell>
+
+                      {/* Render sources array correctly */}
+                      <TableCell className="text-xs text-muted-foreground align-top">
+                        {Array.isArray(item.sources) ? item.sources.join(', ') : item.sources}
+                      </TableCell>
+
                       {hasCategory && (
                         <TableCell className="align-top">
                           <span className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold capitalize">
@@ -265,38 +285,13 @@ export function ContentCrud({
                           </span>
                         </TableCell>
                       )}
-                      {hasLink && (
-                        <TableCell className="align-top">
-                          {item.link ? (
-                            <a
-                              href={item.link}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-primary hover:underline inline-flex items-center gap-1 text-xs font-medium"
-                            >
-                              Visit <ExternalLink className="h-3 w-3" />
-                            </a>
-                          ) : (
-                            <span className="text-xs text-muted-foreground">N/A</span>
-                          )}
-                        </TableCell>
-                      )}
+
                       <TableCell className="text-right align-top">
                         <div className="flex items-center justify-end gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleEditClick(item)}
-                            title="Edit"
-                          >
+                          <Button variant="ghost" size="icon" onClick={() => handleEditClick(item)} title="Edit">
                             <Edit className="h-4 w-4 text-blue-400" />
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleDeleteClick(item)}
-                            title="Delete"
-                          >
+                          <Button variant="ghost" size="icon" onClick={() => handleDeleteClick(item)} title="Delete">
                             <Trash2 className="h-4 w-4 text-rose-400" />
                           </Button>
                         </div>
@@ -346,11 +341,11 @@ export function ContentCrud({
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogHeader>
           <DialogTitle>{selectedItem ? 'Edit Item' : 'Add New Item'}</DialogTitle>
-          <DialogDescription>
+          <Dialogmerged_article>
             {selectedItem
               ? 'Update the fields below to edit this entry.'
               : 'Fill out the form below to create a new entry.'}
-          </DialogDescription>
+          </Dialogmerged_article>
         </DialogHeader>
 
         <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -370,7 +365,7 @@ export function ContentCrud({
 
           <div className="space-y-1.5">
             <label className="text-sm font-semibold" htmlFor="form-content">
-              Content Description
+              Content merged_article
             </label>
             <textarea
               id="form-content"
@@ -457,9 +452,9 @@ export function ContentCrud({
       <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
         <DialogHeader>
           <DialogTitle>Confirm Deletion</DialogTitle>
-          <DialogDescription>
+          <Dialogmerged_article>
             Are you sure you want to delete this entry? This action cannot be undone.
-          </DialogDescription>
+          </Dialogmerged_article>
         </DialogHeader>
         <div className="bg-muted/30 p-3 rounded border my-2 text-sm">
           <strong className="block text-foreground">{selectedItem?.title}</strong>

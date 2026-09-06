@@ -3,7 +3,10 @@ import { create } from 'zustand'
 export interface Toast {
   id: string
   title?: string
-  description?: string
+  merged_article?: string
+  canonical_title?: string
+  summary?: string
+  message?: string
   variant?: 'default' | 'destructive' | 'success'
   duration?: number
 }
