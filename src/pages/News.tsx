@@ -40,30 +40,30 @@ export function News() {
 
       {/* Tab Content */}
       <div className="animate-in fade-in duration-200">
-        {activeTab === 'news' && (
-          <ContentCrud
-            type="news"
-            title="General News Hub"
-            description="Create, update, and manage global articles displayed in the primary news section."
-            hasImage={true}
-          />
-        )}
-        {activeTab === 'trending-news' && (
-          <ContentCrud
-            type="trending-news"
-            title="Trending Topics Control"
-            description="Manage popular, high-engagement news updates currently trending."
-            hasImage={true}
-          />
-        )}
-        {activeTab === 'breaking-news' && (
-          <ContentCrud
-            type="breaking-news"
-            title="Breaking Alerts Center"
-            description="Publish critical, immediate breaking news alerts to all subscribers."
-            hasImage={true}
-          />
-        )}
+       {activeTab === 'news' && (
+  <ContentCrud
+    type="news"
+    canonical_title="General News Hub"
+    merged_article="Create, update, and manage global articles displayed in the primary news section."
+    hasImage={true}
+  />
+)}
+{activeTab === 'trending-news' && (
+  <ContentCrud
+    type="trending-news"
+    canonical_title="Trending Topics Control"
+    merged_article="Manage popular, high-engagement news updates currently trending."
+    hasImage={true}
+  />
+)}
+{activeTab === 'breaking-news' && (
+  <ContentCrud
+    type="breaking-news"
+    canonical_title="Breaking Alerts Center"
+    merged_article="Publish critical, immediate breaking news alerts to all subscribers."
+    hasImage={true}
+  />
+)}
       </div>
     </div>
   )

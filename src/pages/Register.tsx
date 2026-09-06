@@ -21,7 +21,7 @@ export function Register() {
     if (!name || !username || !email || !password) {
       toast({
         title: 'Missing fields',
-        description: 'Please fill in all the required fields.',
+        message: 'Please fill in all the required fields.',
         variant: 'destructive',
       })
       return
@@ -30,7 +30,7 @@ export function Register() {
     if (password !== confirmPassword) {
       toast({
         title: 'Passwords mismatch',
-        description: 'The passwords you entered do not match.',
+        message: 'The passwords you entered do not match.',
         variant: 'destructive',
       })
       return
@@ -48,7 +48,7 @@ export function Register() {
 
       toast({
         title: 'Registration success!',
-        description: 'Your account has been registered. You can now log in.',
+        message: 'Your account has been registered. You can now log in.',
         variant: 'success',
       })
       navigate('/login')
@@ -57,7 +57,7 @@ export function Register() {
       const message = error.response?.data?.message || error.message || 'Registration failed.'
       toast({
         title: 'Registration failed',
-        description: message,
+        message: message,
         variant: 'destructive',
       })
     } finally {

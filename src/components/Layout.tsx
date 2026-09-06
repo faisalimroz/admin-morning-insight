@@ -43,7 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     logout()
     toast({
       title: 'Logged out successfully',
-      description: 'You have been signed out of your session.',
+      message: 'You have been signed out of your session.',
       variant: 'success',
     })
     navigate('/login')

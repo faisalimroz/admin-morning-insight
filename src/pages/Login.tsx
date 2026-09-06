@@ -20,7 +20,7 @@ export function Login() {
     if (!email || !password) {
       toast({
         title: 'Missing fields',
-        description: 'Please fill in all the required fields.',
+        message: 'Please fill in all the required fields.',
         variant: 'destructive',
       })
       return
@@ -41,7 +41,7 @@ export function Login() {
       loginStore(token, user)
       toast({
         title: 'Welcome back!',
-        description: `Successfully signed in as ${user.name || user.username}.`,
+        message: `Successfully signed in as ${user.name || user.username}.`,
         variant: 'success',
       })
       navigate('/')
@@ -50,7 +50,7 @@ export function Login() {
       const message = error.response?.data?.message || error.message || 'Invalid email or password.'
       toast({
         title: 'Sign in failed',
-        description: message,
+        message: message,
         variant: 'destructive',
       })
     } finally {

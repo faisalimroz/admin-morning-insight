@@ -105,7 +105,7 @@ export function Users() {
       })
       toast({
         title: 'User updated',
-        description: `Successfully modified ${editUsername}'s account.`,
+    message: `Successfully modified ${editUsername}'s account.`,
         variant: 'success',
       })
       setIsEditOpen(false)
@@ -113,7 +113,7 @@ export function Users() {
       console.error(err)
       toast({
         title: 'Update failed',
-        description: err.response?.data?.message || err.message || 'An error occurred.',
+     message: err.response?.data?.message || err.message || 'An error occurred.',
         variant: 'destructive',
       })
     }
@@ -133,7 +133,7 @@ export function Users() {
       await deleteMutation.mutateAsync(selectedUser._id)
       toast({
         title: 'User deleted',
-        description: 'Account has been removed from the registry.',
+      message: 'Account has been removed from the registry.',
         variant: 'success',
       })
       setIsDeleteOpen(false)
@@ -141,7 +141,7 @@ export function Users() {
       console.error(err)
       toast({
         title: 'Delete failed',
-        description: err.response?.data?.message || err.message || 'An error occurred.',
+       message: err.response?.data?.message || err.message || 'An error occurred.',
         variant: 'destructive',
       })
     }
@@ -153,7 +153,7 @@ export function Users() {
     if (!adminName || !adminUsername || !adminEmail || !adminPassword) {
       toast({
         title: 'Validation error',
-        description: 'Please fill in all the required fields.',
+       message: 'Please fill in all the required fields.',
         variant: 'destructive',
       })
       return
@@ -162,7 +162,7 @@ export function Users() {
     if (adminPassword !== adminConfirmPassword) {
       toast({
         title: 'Password mismatch',
-        description: 'The passwords do not match.',
+      message: 'The passwords do not match.',
         variant: 'destructive',
       })
       return
@@ -179,7 +179,7 @@ export function Users() {
 
       toast({
         title: 'Admin created!',
-        description: `Successfully registered new administrator "${adminUsername}".`,
+        message: `Successfully registered new administrator "${adminUsername}".`,
         variant: 'success',
       })
 
@@ -194,7 +194,7 @@ export function Users() {
       console.error(err)
       toast({
         title: 'Admin creation failed',
-        description: err.response?.data?.message || err.message || 'An error occurred.',
+       message: err.response?.data?.message || err.message || 'An error occurred.',
         variant: 'destructive',
       })
     } finally {

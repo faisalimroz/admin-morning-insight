@@ -25,15 +25,14 @@ import {
 } from '@/components/ui/Dialog'
 import { Card, CardContent } from '@/components/ui/Card'
 import { toast } from '@/store/toastStore'
-import { Search, Plus, Edit, Trash2, ChevronLeft, ChevronRight, Loader2, ExternalLink } from 'lucide-react'
+import { Search, Plus, Edit, Trash2, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 
 interface ContentCrudProps {
   type: string
-  title: string
-  description: string
+
   canonical_title: string
   merged_article: string
-  summary: string
+  
   hasCategory?: boolean
   hasLink?: boolean
   hasImage?: boolean
@@ -41,11 +40,10 @@ interface ContentCrudProps {
 
 export function ContentCrud({
   type,
-  title,
-  description,
+
   canonical_title,
   merged_article,
-  summary,
+
   hasCategory = false,
   hasLink = false,
   hasImage = true,

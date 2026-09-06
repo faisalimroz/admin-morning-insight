@@ -28,7 +28,7 @@ export function Toaster() {
 
             <div className="flex-1 space-y-1">
               {toast.title && <p className="text-sm font-semibold">{toast.title}</p>}
-              {toast.description && <p className="text-xs opacity-90 leading-relaxed">{toast.description}</p>}
+              {toast.message && <p className="text-xs opacity-90 leading-relaxed">{toast.message}</p>}
             </div>
 
             <button
