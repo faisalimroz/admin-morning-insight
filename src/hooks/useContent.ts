@@ -129,13 +129,13 @@ export interface ContentItem {
   _id?: string
   id?: string
   event_id?: string
+  category?: string
   title?: string
   content?: string
   canonical_title?: string
   merged_article?: string
   summary?: string
   sources?: string[]
-  category?: string
   imageUrl?: string
   image_url?: string
   link?: string
@@ -235,6 +235,7 @@ export function useDeleteContent(type: string) {
 }
 
 export interface CategoryCount {
+  category: number
   _id: string
   count: number
 }
@@ -243,7 +244,7 @@ export function useInsightCategoryCounts() {
   return useQuery<CategoryCount[]>({
     queryKey: ['insight-category-counts'],
     queryFn: async () => {
-      const response = await apiClient.get('/admin/insight/categories/count')
+      const response = await apiClient.get('/admin/news/categories/count')
       return Array.isArray(response.data) ? response.data : (response.data?.data || [])
     },
   })

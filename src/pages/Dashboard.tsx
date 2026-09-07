@@ -36,11 +36,11 @@ export function Dashboard() {
   // const { data: rates, isLoading: isRatesLoading, refetch: refetchRates } = useCurrencyRates()
   const quote = { quote: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe" }
   const isQuoteLoading = false
-  const refetchQuote = () => {}
-  
+  const refetchQuote = () => { }
+
   const rates = { rates: { EUR: 0.92, GBP: 0.78, JPY: 154.5, CAD: 1.37 } }
   const isRatesLoading = false
-  const refetchRates = () => {}
+  const refetchRates = () => { }
 
   const { data: weather, isLoading: isWeatherLoading } = useWeatherData(selectedCity)
   const { data: categories, isLoading: isCategoriesLoading } = useInsightCategoryCounts()
@@ -50,13 +50,13 @@ export function Dashboard() {
   const { data: breaking } = useContentList('breaking-news')
   const { data: tenders } = useContentList('tenders')
   const { data: users } = useUsersList()
-// 1. Get the unwrapped list of users
-const userList = Array.isArray(users) 
-  ? users 
-  : (users as any)?.items || (users as any)?.data?.items || []
+  // 1. Get the unwrapped list of users
+  const userList = Array.isArray(users)
+    ? users
+    : (users as any)?.items || (users as any)?.data?.items || []
 
-// 2. Get the total count from pagination metadata or fallback to array length
-const totalCount = (users as any)?.pagination?.total || (users as any)?.data?.pagination?.total || userList.length
+  // 2. Get the total count from pagination metadata or fallback to array length
+  const totalCount = (users as any)?.pagination?.total || (users as any)?.data?.pagination?.total || userList.length
   const totalNews = (news?.length || 0) + (trending?.length || 0) + (breaking?.length || 0)
 
   // Weather Code Mapper
@@ -292,11 +292,8 @@ const totalCount = (users as any)?.pagination?.total || (users as any)?.data?.pa
           ) : categories && categories.length > 0 ? (
             <div className="space-y-4">
               {categories.map((cat, idx) => {
-                // Generate a visual bar representing the count relative to maximum count
                 const maxCount = Math.max(...categories.map((c) => c.count), 1)
                 const percentage = (cat.count / maxCount) * 100
-
-                // Aesthetic color colors
                 const colors = [
                   'bg-indigo-500',
                   'bg-sky-500',
@@ -307,10 +304,10 @@ const totalCount = (users as any)?.pagination?.total || (users as any)?.data?.pa
                 const color = colors[idx % colors.length]
 
                 return (
-                  <div key={cat._id || idx} className="space-y-1.5">
+                  <div key={cat.category || idx} className="space-y-1.5">
                     <div className="flex justify-between text-sm">
                       <span className="font-semibold capitalize text-foreground/90">
-                        {cat._id || 'General'}
+                        {cat.category || 'General'}
                       </span>
                       <span className="font-mono font-bold text-muted-foreground">
                         {cat.count} articles
