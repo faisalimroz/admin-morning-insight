@@ -146,10 +146,10 @@ export interface ContentItem {
 // Maps type keys to their corresponding endpoint paths
 const ENDPOINTS: Record<string, string> = {
   news: '/admin/news',
-  'trending-news': '/admin/news',
-  'breaking-news': '/admin/news',
+  'trending-news': '/admin/trending-news',
+  'breaking-news': '/admin/breaking-news',
   tenders: '/admin/tenders',
-  insight: '/admin/news',
+  insight: '/admin/insight',
   bookmarks: '/admin/bookmarks',
 }
 

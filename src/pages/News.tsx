@@ -2,7 +2,7 @@ import React from 'react'
 import { ContentCrud } from '@/components/ContentCrud'
 import { Newspaper, TrendingUp, AlertCircle } from 'lucide-react'
 
-type NewsTab = 'news' | 'trending-news' | 'breaking-news'
+type NewsTab = 'news' | 'trending-news' | 'breaking-news' | 'tenders'
 
 export function News() {
   const [activeTab, setActiveTab] = React.useState<NewsTab>('news')
@@ -11,6 +11,7 @@ export function News() {
     { id: 'news' as NewsTab, name: 'General News', icon: Newspaper, desc: 'Manage global daily news feeds.' },
     { id: 'trending-news' as NewsTab, name: 'Trending News', icon: TrendingUp, desc: 'Manage highly shared/viewed trending topics.' },
     { id: 'breaking-news' as NewsTab, name: 'Breaking News', icon: AlertCircle, desc: 'Manage immediate flash notices and alert events.' },
+    { id: 'tenders' as NewsTab, name: 'Tenders', icon: AlertCircle, desc: 'Manage tender announcements and opportunities.' },
   ]
 
   return (
@@ -64,6 +65,20 @@ export function News() {
     hasImage={true}
   />
 )}
+
+
+
+{activeTab === 'tenders' && (
+  <ContentCrud
+    type="tenders"
+    canonical_title="Tender Announcements"
+    merged_article="Manage tender announcements and opportunities."
+    hasImage={true}
+  />
+)}
+ 
+
+
       </div>
     </div>
   )

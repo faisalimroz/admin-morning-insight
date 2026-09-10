@@ -30,10 +30,6 @@ import {
 
 export function Dashboard() {
   const [selectedCity, setSelectedCity] = React.useState('New York')
-
-  // Queries (Daily Inspiration and Currency Rates API calls commented out due to auth redirect issues)
-  // const { data: quote, isLoading: isQuoteLoading, refetch: refetchQuote } = useDailyInspiration()
-  // const { data: rates, isLoading: isRatesLoading, refetch: refetchRates } = useCurrencyRates()
   const quote = { quote: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe" }
   const isQuoteLoading = false
   const refetchQuote = () => { }
@@ -108,7 +104,7 @@ export function Dashboard() {
 
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Insights Categories</CardTitle>
+            <CardTitle className="text-sm font-medium">Categories</CardTitle>
             <Layers className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>

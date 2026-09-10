@@ -209,9 +209,9 @@ const filteredItems = React.useMemo(() => {
           <h1 className="text-2xl font-bold tracking-tight">{canonical_title}</h1>
           <p className="text-sm text-muted-foreground mt-0.5">{merged_article}</p>
         </div>
-        <Button onClick={handleAddClick} className="self-start sm:self-center">
+        {/* <Button onClick={handleAddClick} className="self-start sm:self-center">
           <Plus className="mr-2 h-4 w-4" /> Add Item
-        </Button>
+        </Button> */}
       </div>
 
       {/* Controls Card */}

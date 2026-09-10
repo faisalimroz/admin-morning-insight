@@ -33,8 +33,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const menuItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
     { name: 'News', path: '/news', icon: Newspaper },
-    { name: 'Insights', path: '/insights', icon: Lightbulb },
-    { name: 'Tenders', path: '/tenders', icon: FileText },
     { name: 'Bookmarks', path: '/bookmarks', icon: Bookmark },
     { name: 'Users & Admins', path: '/users', icon: Users },
   ]
