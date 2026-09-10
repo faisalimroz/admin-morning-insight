@@ -5,8 +5,6 @@ import { useUIStore, updateThemeClass } from '@/store/uiStore'
 import {
   LayoutDashboard,
   Newspaper,
-  FileText,
-  Lightbulb,
   Bookmark,
   Users,
   LogOut,

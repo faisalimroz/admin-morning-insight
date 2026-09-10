@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/Dialog'
 import { Card, CardContent } from '@/components/ui/Card'
 import { toast } from '@/store/toastStore'
-import { Search, Plus, Edit, Trash2, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import { Search,  Edit, Trash2, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 
 interface ContentCrudProps {
   type: string
@@ -79,15 +79,15 @@ export function ContentCrud({
   }, [searchTerm])
 
   // Open Add Dialog
-  const handleAddClick = () => {
-    setSelectedItem(null)
-    setFormTitle('')
-    setFormContent('')
-    setFormCategory('')
-    setFormLink('')
-    setFormImage('')
-    setIsFormOpen(true)
-  }
+  // const handleAddClick = () => {
+  //   setSelectedItem(null)
+  //   setFormTitle('')
+  //   setFormContent('')
+  //   setFormCategory('')
+  //   setFormLink('')
+  //   setFormImage('')
+  //   setIsFormOpen(true)
+  // }
 
   // Open Edit Dialo
   const handleEditClick = (item: any) => {
